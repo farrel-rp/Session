@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Controllers;
+
+class Auth extends BaseController
+{
+    public function login()
+    {
+        return view('login');
+    }
+
+    public function prosesLogin()
+    {
+        $session = session();
+
+        $username = $this->request->getPost('username');
+        $password = $this->request->getPost('password');
+
+        // contoh sederhana (tanpa database)
+        if ($username == "admin" && $password == "123") {
+            $session->set([
+                'username' => $username,
+                'isLogin' => true
+            ]);
+
+            return redirect()->to('/dashboard');
+        } else {
+            return redirect()->back()->with('error', 'Login gagal');
+        }
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to('/login');
+    }
+}
